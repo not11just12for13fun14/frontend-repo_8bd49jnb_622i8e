@@ -1,71 +1,48 @@
+import { useState } from 'react'
+import NeonHero from './components/NeonHero'
+import TournamentList from './components/TournamentList'
+import PredictionPanel from './components/PredictionPanel'
+
 function App() {
+  const [selectedTournament, setSelectedTournament] = useState(null)
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      {/* Subtle pattern overlay */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.05),transparent_50%)]"></div>
+    <div className="min-h-screen bg-slate-950 text-white relative overflow-hidden">
+      {/* subtle grid */}
+      <div className="pointer-events-none absolute inset-0 opacity-[0.07]" style={{
+        backgroundImage: 'linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px)',
+        backgroundSize: '40px 40px'
+      }} />
 
-      <div className="relative min-h-screen flex items-center justify-center p-8">
-        <div className="max-w-2xl w-full">
-          {/* Header with Flames icon */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center mb-6">
-              <img
-                src="/flame-icon.svg"
-                alt="Flames"
-                className="w-24 h-24 drop-shadow-[0_0_25px_rgba(59,130,246,0.5)]"
-              />
-            </div>
-
-            <h1 className="text-5xl font-bold text-white mb-4 tracking-tight">
-              Flames Blue
-            </h1>
-
-            <p className="text-xl text-blue-200 mb-6">
-              Build applications through conversation
-            </p>
-          </div>
-
-          {/* Instructions */}
-          <div className="bg-slate-800/50 backdrop-blur-sm border border-blue-500/20 rounded-2xl p-8 shadow-xl mb-6">
-            <div className="flex items-start gap-4 mb-6">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center font-bold">
-                1
-              </div>
-              <div>
-                <h3 className="font-semibold text-white mb-1">Describe your idea</h3>
-                <p className="text-blue-200/80 text-sm">Use the chat panel on the left to tell the AI what you want to build</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 mb-6">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center font-bold">
-                2
-              </div>
-              <div>
-                <h3 className="font-semibold text-white mb-1">Watch it build</h3>
-                <p className="text-blue-200/80 text-sm">Your app will appear in this preview as the AI generates the code</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center font-bold">
-                3
-              </div>
-              <div>
-                <h3 className="font-semibold text-white mb-1">Refine and iterate</h3>
-                <p className="text-blue-200/80 text-sm">Continue the conversation to add features and make changes</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Footer */}
-          <div className="text-center">
-            <p className="text-sm text-blue-300/60">
-              No coding required • Just describe what you want
-            </p>
-          </div>
+      <header className="relative z-20 flex items-center justify-between max-w-6xl mx-auto px-6 py-5">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-fuchsia-500 to-cyan-400 shadow-[0_0_25px_rgba(255,0,128,0.6)]" />
+          <span className="text-lg font-bold tracking-tight">Orbital Odds</span>
         </div>
-      </div>
+        <nav className="flex items-center gap-4 text-cyan-100/90">
+          <a href="#tournaments" className="hover:text-white">Tournaments</a>
+          <a href="/test" className="hover:text-white">System Check</a>
+        </nav>
+      </header>
+
+      <NeonHero onCTAClick={() => {
+        const el = document.getElementById('tournaments')
+        if (el) el.scrollIntoView({ behavior: 'smooth' })
+      }} />
+
+      <TournamentList onJoin={(t) => setSelectedTournament(t)} />
+
+      <footer className="relative z-20 py-10 text-center text-xs text-cyan-200/60">
+        Built for immersive predictions • Casino neon aesthetic • Demo only
+      </footer>
+
+      {selectedTournament && (
+        <PredictionPanel
+          tournament={selectedTournament}
+          onClose={() => setSelectedTournament(null)}
+          onSubmitted={() => {}}
+        />
+      )}
     </div>
   )
 }
